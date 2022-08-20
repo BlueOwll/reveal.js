@@ -16,8 +16,244 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section>
+					<aside class="notes">
+						Regular expressions are very popular instrument and it is used for text parsing, 
+						searching and replacing data and other things. They are supported by most of 
+						programming languages and of course by Javascript.
+						It is common to use it handling HTMLinner code, extracting class names, validating input.
+						It seems simple but it takes some time to feel free using it.
+					</aside>
+					<h1>Regular Expression in JS</h1>
+					  presented by BlueOwll 2022
+				</section>				
+				<section>
+					<aside class="notes">
+						What is regular expression?
+						It’s  a pattern, that is  a row of characters, special characters and operators.
+					</aside>
+					What is regular expression?
+					<pre><code data-trim data-noescape>
+						/hello/g 
+					</code></pre>==> hello					
+				</section>
+				<section>
+					<aside class="notes">
+						They are specified separately (after regexp itself, or as separate argument of function) and show how to search.
+						they are:
+					</aside>
+					<h3>Flags</h3>
+					<ul>
+						<li>
+							<b>g</b> - global search - all matchings (by default it's "local", we find only the first matching)
+						</li>
+						<li>
+							<b>i</b> - case in-sensitive
+						</li>
+						<li>
+							<b>m</b> - multiline search
+						</li>				
+						.. and other:<a href="https://www.codeguage.com/courses/regexp/flags">Flags</a>	
+					</ul>					
+				  </section>
+				<section>
+					<aside class="notes">
+						Every character in regular expresiion means ONE character in matching string.
+						All characters in regular expression as a, b, ! etc must appear literally.
+					</aside>
+					<h3>Matching</h3>
+					<code> Hello! </code> ==> Hello!<br><br>
+					each character means ONE character
+				</section>
+				<section>
+					<aside class="notes">
+						The set of characters can be specified using square brackets:
+						[abc] match a, or b, or c
+						You can add range as
+						[a-z]
+						and punctuation marks (but be sure that - hyphen is in the beginnig or in the end of set to avoid turning to a range)
+						If you mention the caret at the beginning of set it will mean that there should be any character excluding specified.
+						[^abc] => 2 or t or ?
+						In square brackets all characters excluding^ mean literally itself.
+					</aside>
+					<h3>Alternatives</h3>
+					<code> [abc] </code> ==>  match <em>a</em> <b>or</b> <em>b</em> <b>or</b> <em>c</em><br><br>
+					Ranges<br>
+					<code> [a-zA-Z.&?] </code> ==> any ONE latin letter or punctuation marks<br><br>
+					Exclusion<br>
+					<code> [^abc] </code> ==> any, but <em>a</em>, <em>b</em>, <em>c</em>, e.g. <em>2</em> or <em>t</em> or <em>?</em><br><br>
+				</section>
+
+				<section>
+					<aside class="notes">
+						You can specify how much time the character should appear  (or group of caracters)
+					</aside>
+					<h3>Quantifiers</h3>
+					<ul>
+						<li>
+							<b>?</b> - from 0 to 1
+						</li>
+						<li>
+							<b>*</b> - from 0 to many
+						</li>
+						<li>
+							<b>+</b> - from 1 to many
+						</li>	
+						and more strict:
+						<li>
+							<b>{2}</b> - 2 times exactly<br>
+							<b>{2,6}</b> - from 2 to 6
+						</li>				
+					</ul>						
+				  </section>
+				  <section data-markdown data-separator-notes="^Note:">
+					<textarea data-template>
+						### Predefined character classes
+						* \w - letter or digit or underscore
+						* \W -  everything but letter or digit
+						* \d -  digit
+						* \D - everything but digit
+						* \s - any whitespace  character 
+						* \S - everything, but a whitespace 
+						* \b - word bound (beginning or end)
+						* \B - not word bound 
+						Note:
+						Predefined caracter classes is a short record of some ranges, for example:
+						
+						the full table it is easy to find in the Internet
+					</textarea>
+				  </section>
+				<section>
+					<aside class="notes">
+						But in the rest expression you should use escape sign backslash to show that this is not operator.
+					</aside>
+					<h3>Escape character</h3>
+					\[&nbsp;&nbsp;\.&nbsp;&nbsp;\?&nbsp;&nbsp;\\<br><br><br>
+					<h3>Other useful special characters</h3>
+					. - any character<br>
+					^ - word beginning<br>
+					$ - word end<br>
+				</section>
+				<section>
+					<aside class="notes">
+						The most interesting and complicated opportunities are provided by parEntheses.
+						Firstly they allow to group a sequence of characters to tell how much time they shoul appear.
+						Usually the quantifier corresponds to one character.
+					</aside>
+					<h3>Parentheses</h3>
+					group characters for repeating: <br>
+					(ab)+ ==>  <em>ab</em> <b>or</b> <em>abab</em> <b>or</b> <em>ababababab</em>
+				</section>
+				<section>					
+					<section>
+						<aside class="notes">
+							Secondly they form capturing groups.
+							For example file names:
+							(\w+)\.(\w+)
+							In this case we can pick out only the file name (group #1) and only the extention (group #2).
+						</aside>
+						<h3>Parentheses</h3>
+						group characters for capturing and handling: <br>
+						(\w+)\.(\w+) ==> <br>matching <em>example.txt</em> with group#1 <em>example</em> and group#2 <em>txt</em><br>
+					</section>					
+					<section>
+						<aside class="notes">
+							We can refer to the group in the same expression:
+							Here we tell that exactly the same expression must repeat.
+						</aside>
+						Refer to group in the same expression<br><br>
+						(\d\d)\1+  ==> 121212 <b>or</b> 9494 <br>	
+					</section>
+					<section>
+						<aside class="notes">
+							We can nest groups and refer to each of them:
+							outer parentheses is group # 1 - ful file name
+							inner groups 2 and 3 - file name and extension.
+							
+						</aside>
+						Nested group<br><br>
+						file:\s+((\w+)\.(\w+)) ==> <br>matching <em>file: example.txt</em><br> with captured group#1 <em>example.txt</em>, group#2 <em>example</em> and group#3 <em>txt</em><br>
+					</section>				
+				</section>
+				<section>
+					<aside class="notes">
+						There a lot of other opportunities, that make the regular expression extremely powerfull but quite tricky for understanding and using.
+						And JavaScript has some special methods to use these opportinites as much as possible.
+						You can construct regexp as a literal or as an object.
+					</aside>
+					<h3>Regular Expression in JavaScript</h3>
+					<pre><code data-trim data-noescape>
+						const regex1 = /\w+/;
+						const regex2 = new RegExp('\\w+');
+					</code></pre>
+					 (the regexp as a string, so it’s important to use escape sign for backslash)
+				</section>
+				<section>
+					<section>
+						<aside class="notes">
+							Regexp is used when manipulating strings (using String.prototype methods):
+						</aside>
+						<h3>Manipulating strings (using String.prototype methods)</h3>
+						<pre><code data-trim data-noescape>
+							str.match(regexp);
+						</code></pre>
+						if flag <b>g</b>: returns array of matching without groups<br>
+						in other case returns array:<br>
+						<em>full matching, capture groups, position in input string and the input string</em>
+					</section>
+					<section>
+						<h3>Manipulating strings (using String.prototype methods)</h3>
+						<pre><code data-trim data-noescape>
+							str.matchAll(regexp)
+						</code></pre>
+						if flag <b>g</b>: returns arraylike object of arrays: <br>
+						<em>full matching, capture groups, position in input string and the input string</em>
+					</section>
+					<section>
+						Manipulating strings (using String.prototype methods)<br><br>
+						<pre><code data-trim data-noescape>
+							str.split(regexp)
+						</code></pre>
+						splits the string on every matching expression <br>
+					</section>
+					<section>
+						Manipulating strings (using String.prototype methods)<br><br>
+						<pre><code data-trim data-noescape>
+							str.search(regexp)
+						</code></pre>
+						returns the position of first matching (or -1 if nothing found)
+					</section>
+					<section>
+						Manipulating strings (using String.prototype methods)<br><br>
+						<pre><code data-trim data-noescape>
+							str.replace(str|regexp, str|func)
+						</code></pre>
+						replace all (if there is flag g) matching substrings with string or using function, <br>
+						that accepts array with data of matching including groups and position(spread of:<br>
+						<em>full matching, capture groups, position in input string and the input string)</em>
+					</section>
+				</section>
+				<section>
+					<aside class="notes">
+						The following methods are regexp object methods, and they execute iterative seaching (if there is flag g). 
+						After each call they fix the lastIndex and next time begin the searching from that position. 
+						we can specify this index to begin searching from particular point
+					</aside>
+					<h3>Using RegExp.prototype methods</h3>
+					(save the lastIndex for further search)<br><br>
+					<pre><code data-trim data-noescape>
+						regexp.exec(str)
+					</code></pre>
+					returns array with matching information:<br>
+					<em>full matching, capture groups, position in input string and the input string</em><br><br>
+					<pre><code data-trim data-noescape>
+						regexp.test(str)
+					</code></pre>
+					returns true or false.
+				</section>
+				<section>
+					Thank you!
+				</section>	
 			</div>
 		</div>
 
